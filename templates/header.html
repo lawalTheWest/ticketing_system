@@ -1,0 +1,31 @@
+<!-- this is the header component -->
+{% block header %}
+<link rel='stylesheet' href="{{ url_for('static', filename='header.css') }}" />
+{% endblock %}
+{% block contents %}
+<nav>
+    <div class='divHead'>
+        <img src="{{ url_for('static', filename='./images/logo.png') }}" alt="brand logo">
+        <h1>CYBERSFORTH - X</h1>
+    </div>
+    <div>    
+        <ul class='nav-links'>
+            <li>
+                <a href='#'>Home</a>
+            </li>
+            <li>
+                <a href='#'>About</a>
+            </li>
+            <li>
+                <a href='#'>Tickets</a>
+            </li>
+            <li>
+                <a href='#'>History</a>
+            </li>
+            <li>
+                <a href='#'>Contacts</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock contents %}
