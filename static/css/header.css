@@ -1,0 +1,136 @@
+/* styles for header.css */
+header {
+    display: flex;
+    height: 70px;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+nav ul li {
+    margin-right: 15px;
+    font-size: 90%;
+}
+
+nav ul li a {
+    color: #2E175D;
+    text-decoration: none;
+}
+
+.the-search {
+    max-width: 70px;
+}
+
+.search-button {
+    max-width: 30px;
+}
+
+/* style for the menu icon at smaller screen sizes */
+.menu-icon {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* working to make the navbar responsive */
+@media (max-width : 750px) {
+    .menu-icon {
+        display: block;
+        color: #2E175D;
+        margin-right: 40px;
+        padding-top: 10px;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        /* padding: 20px 0; */
+        padding: 0;
+        box-shadow: 0px 4px 8px rgb(0, 0, 0, 0.1);
+        z-index: 1000;
+
+        /* new code */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+    }
+
+    .nav-links.open {
+        /* display: flex; */
+        /* new code */
+        max-height: 500px;
+        padding: 20px 0;
+    }
+
+    nav ul li {
+        /* display: block; */
+        margin: 8px, 0;
+        text-align: center;
+        width: 80%;
+        padding: 10px;
+        transition: #2E175D 0.3s ease, #fff 0.3s ease;
+        position: relative;
+        border: 1px solid#2E175D;
+        margin: 5px;
+        border-radius: 15px;
+    }
+
+
+    nav ul li:hover {
+        background-color: #2E175D;
+        border-radius: 15px;
+        transform: scale(1.05);
+        transition: all 0.3s ease;
+    }
+
+    nav ul li:hover a {
+        color: #fff;
+    }
+
+    nav ul li:active {
+        background: #ffa500;
+        transform: scale(0.81);
+        transition: all 0.3s ease;
+    }
+
+    .search-container {
+        text-align: center;
+    }
+
+    nav ul li a {
+        color: #2E175D;
+        text-decoration: none;
+        width: 100%;
+        /* new */
+        height: 100%;
+        display: block;
+        padding: 10px 0;
+        box-sizing: border-box;
+    }
+
+    .the-search {
+        max-width: 100%;
+    }
+    
+    .search-button {
+        max-width: 100px;
+    }
+
+    .lone-search {
+        border: none;
+    }
+    
+}
