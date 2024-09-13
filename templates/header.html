@@ -11,19 +11,22 @@
     <div>    
         <ul class='nav-links'>
             <li>
-                <a href='#'>Home</a>
+                <a href="{{ url_for('routes.Home') }}">Home</a>
             </li>
             <li>
-                <a href='#'>About</a>
+                <a href="{{ url_for('routes.About') }}">About</a>
             </li>
             <li>
-                <a href='#'>Tickets</a>
+                <a href="#">Tickets</a>
             </li>
             <li>
                 <a href='#'>History</a>
             </li>
             <li>
                 <a href='#'>Contacts</a>
+            </li>
+            <li>
+                <a href="{{ url_for('routes.Login') }}" >Login</a>
             </li>
         </ul>
     </div>

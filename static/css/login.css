@@ -1,0 +1,39 @@
+/* styles the login page */
+
+.login_cls {
+    display: flex;
+    flex-direction: column;
+    margin: 100px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.login_cls form {
+    border: 4px solid #2E175D;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 15px 15px 17px rgba(0, 0, 0, 0.3);
+}
+
+.login_cls form button {
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.login_cls form button:hover {
+    transition: all 0.3s ease;
+    transform: scale(1.04);
+    background-color: #2E175D;
+    color: #fff;
+}
+
+.login_cls form button:active {
+    transition: all 0.3s ease;
+    transform: scale(0.8);
+    background-color: orange;
+    color: #fff;
+}

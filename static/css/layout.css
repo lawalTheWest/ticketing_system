@@ -21,6 +21,16 @@ nav img {
     width: 50px;
 }
 
+nav img:hover {
+    transition: all 0.3s ease;
+    transform: scale(1.2);
+}
+
+nav img:active {
+    transition: all 0.3s ease;
+    transform: scale(0.8);
+}
+
 .divHead {
     display: flex;
     flex-wrap: wrap;
@@ -106,7 +116,7 @@ main {
 /* footer section */
 footer {
     display: flex;
-    height: 50px;
+    height: 70px;
     width: 100%;
     position: relative;
     bottom: 0;

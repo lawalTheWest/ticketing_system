@@ -1,10 +1,15 @@
+# base_model.py
 '''
     Database models:
         user, ticket, appointment
 '''
+
 from app import db
 from flask_login import UserMixin
 from datetime import datetime
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
 
 class User(db.Model, UserMixin):
     '''User class'''
@@ -46,7 +51,8 @@ class User(db.Model, UserMixin):
                                    lazy=True)
     
     created_at = db.Column(db.DateTime,
-                           nullable=False)
+                           nullable=False,
+                           default=datetime.utcnow)
     
 class Ticket(db.Model):
     '''Class Ticket'''
@@ -56,17 +62,18 @@ class Ticket(db.Model):
     date = db.Column(db.DateTime,
                      nullable=False,
                      default=datetime.utcnow)
+
     description = db.Column(db.Text,
                             nullable=False)
     
     status = db.Column(db.String(20),
                        nullable=False,
-                       defaualt='Open')
-    
+                       default='Open')
+
     user_id = db.Column(db.Integer,
                         db.ForeignKey('user.id'),
                         nullable=False)
-    
+
 class Appointment(db.Model):
     '''Appointment Class'''
     id = db.Column(db.Integer,
@@ -79,5 +86,5 @@ class Appointment(db.Model):
                      nullable=False)
     
     user_id = db.Column(db.Integer,
-                        db.ForeignKey('user_id'),
+                        db.ForeignKey('user.id'),
                         nullable=False)
