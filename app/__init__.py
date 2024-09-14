@@ -8,8 +8,9 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from .routes import routes
+# from .routes import routes
 from config import Config
+# from .base_model import User
 
 '''initialize my extensions'''
 db = SQLAlchemy()
@@ -31,16 +32,15 @@ def create_app():
     migrate.init_app(app, db)
     login_manager.init_app(app)
     
-    
     '''
         register Blueprint
     '''
+    from .routes import routes
     app.register_blueprint(routes)
-
-    from .base_model import User, Ticket, Appointment
     
     @login_manager.user_loader
     def load_user(user_id):
-        return user.query.get(int(user_id))
+        from .base_model import User
+        return User.query.get(int(user_id))
     
     return app

@@ -8,6 +8,7 @@ from app import db
 from flask_login import UserMixin
 from datetime import datetime
 from flask_bcrypt import Bcrypt
+from datetime import datetime, timezone
 
 bcrypt = Bcrypt()
 
@@ -52,8 +53,14 @@ class User(db.Model, UserMixin):
     
     created_at = db.Column(db.DateTime,
                            nullable=False,
-                           default=datetime.utcnow)
+                           default=datetime.now(timezone.utc))
     
+    def set_password(self, password):
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
+
 class Ticket(db.Model):
     '''Class Ticket'''
     id = db.Column(db.Integer,
