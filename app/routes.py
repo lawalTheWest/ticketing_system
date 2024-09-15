@@ -55,14 +55,20 @@ def Login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user and user.check_password(form.password.data):
-            login_user(user)
-            flash('Logged in Successfulyy', 'success')
-            return redirect(url_for('routes.Dashboard'))
-        else:
-            flash('Invalid Email or Password', 'danger')
+        if user:
+            try:
+                if user.check_password(form.password.data):
+                    login_user(user)
+                    flash('Logged in Successfulyy', 'success')
+                    return redirect(url_for('routes.Dashboard'))
+                else:
+                    flash('Invalid Email or Password', 'danger')
+            except ValueError:
+                flash("There was an issue with your account \n please")
+                return redirect(url_for('routes.reset_password'))
     else:
-        print(form.errors)
+        # print(form.errors)
+        flash('Invalid Email or Password!', 'danger')
     return render_template('login.html', form=form)
 
 @routes.route('/register', methods=['Get', 'Post'])
@@ -93,3 +99,8 @@ def Logout():
 @login_required
 def Dashboard():
     return render_template('dashboard.html', name=current_user.username)
+
+
+@routes.route('/reset_password')
+def Reset_password():
+    return render_template('resetPassword.html')

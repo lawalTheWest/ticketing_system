@@ -18,7 +18,6 @@ migrate = Migrate()
 login_manager = LoginManager()
 login_manager.login_view = 'routes.Login'
 
-
 def create_app():
     app = Flask(__name__,
                 template_folder='../templates',
@@ -26,7 +25,7 @@ def create_app():
     
     '''database configuration'''
     app.config.from_object(Config)
-    
+
     ''' initializing the app with extesions'''
     db.init_app(app)
     migrate.init_app(app, db)

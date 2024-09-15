@@ -7,9 +7,9 @@
 from app import db
 from flask_login import UserMixin
 from datetime import datetime
-from flask_bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt, check_password_hash, generate_password_hash
 from datetime import datetime, timezone
-from werkzeug.security import generate_password_hash  # check_password_hash
+# from werkzeug.security import generate_password_hash
 
 bcrypt = Bcrypt()
 
@@ -59,10 +59,10 @@ class User(db.Model, UserMixin):
     
     def set_password(self, password):
         # self.password = bcrypt.generate_password_hash(password).decode('utf-8')
-        self.password = generate_password_hash(password)
+        self.password = generate_password_hash(password).decode('utf-8')
         
     def check_password(self, password):
-        return bcrypt.check_password_hash(self.password, password)
+        return check_password_hash(self.password, password)
 
 class Ticket(db.Model):
     '''Class Ticket'''
