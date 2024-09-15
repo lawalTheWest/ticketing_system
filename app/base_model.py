@@ -42,7 +42,7 @@ class User(db.Model, UserMixin):
     phone_number = db.Column(db.String(15),
                              unique=True,
                              nullable=False)
-    
+
     # tickets & appointment relationship
     tickets = db.relationship('Ticket',
                               backref='user',

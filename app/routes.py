@@ -4,22 +4,27 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from wtforms import StringField, PasswordField, SubmitField
-# from app import db
-from wtforms.validators import InputRequired, Length, Email, EqualTo, ValidationError
+from app import db
+from wtforms.validators import DataRequired, InputRequired, Length, Email, EqualTo, ValidationError
 from flask_wtf import FlaskForm
 from .base_model import User
+# from werkzeug.security import generate_password_hash, check_password_hash
+from flask_bcrypt import Bcrypt
 
-
+bycrypt = Bcrypt()
 routes = Blueprint('routes', __name__)
 
 # Forms
 class RegisterForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired(), Length(min=4,max=80)])
-    email = StringField('Email', validators=[InputRequired(), Email()])
-    password = PasswordField('Password', validators=[InputRequired(), EqualTo('password')])
-    confirm_password = PasswordField('Confirm PAssword', validators=[InputRequired(), EqualTo('password')])
+    username = StringField('Username', validators=[InputRequired(), Length(min=4,max=80)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[InputRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[InputRequired(), EqualTo('password')])
+    first_name = StringField('First Name', validators=[DataRequired(), Length(min=4, max=80)])
+    last_name = StringField('Last Name', validators=[DataRequired(), Length(min=4,max=80)])
+    phone_number = StringField('Phone Number', validators=[InputRequired(), Length(min=8, max=20)])
     submit = SubmitField('Register')
-    
+
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
@@ -49,7 +54,7 @@ def About():
 def Login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = user.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
             flash('Logged in SUccessfulyy', 'success')
@@ -62,11 +67,12 @@ def Login():
 def Register():
     form = RegisterForm()
     if form.validate_on_submit():
+        hashed_password = bycrypt.generate_password_hash(form.password.data, method='scrypt')
         new_user = User(username=form.username.data,
                         email=form.email.data,
-                        first_name='firstName',
-                        last_name='lastName',
-                        phone_number='00000000000')
+                        first_name=form.first_name.data,
+                        last_name=form.last_name.data,
+                        phone_number=form.phone_number.data)
         new_user.set_password(form.password.data)
         db.session.add(new_user)
         db.session.commit()

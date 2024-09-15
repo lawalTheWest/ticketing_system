@@ -6,29 +6,55 @@
 {% block contents %}
 <div class='login_cls'>
     <!-- <h3>Login</h3> -->
-    <form>
-        <legend><b>Sign up</b></legend>
-        <p>Username</p>
-        <input type="text" required /><br />
-
-        <p>Email</p>
-        <input type="email" required />
-
-        <p>Phone Number</p>
-        <input type="number" required />
-
-        <p>Firstname</p>
-        <input type="text" required />
-
-        <p>Lastname</p>
-        <input type="text" required />
-
-        <p>Password</p>
-        <input type="password" required /> <br />
-
-        <button type="submit">Sign up</button> <br>
-
-        <p>alraedy have an account? <a href="{{ url_for('routes.Login') }}">login</a></p>
-    </form>
+    <h2>Sign Up</h2>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.username.label }}<br>
+                {{ form.username(size=32) }}<br>
+                {% for error in form.username.errors %}
+                    <span style="color: red;">[{{ error }}]</span><br>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.email.label }}<br>
+                {{ form.email(size=32) }}<br>
+                {% for error in form.email.errors %}
+                    <span style="color: red;">[{{ error }}]</span><br>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.password.label }}<br>
+                {{ form.password(size=32) }}<br>
+                {% for error in form.password.errors %}
+                    <span style="color: red;">[{{ error }}]</span><br>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.confirm_password.label }}<br>
+                {{ form.confirm_password(size=32) }}<br>
+                {% for error in form.confirm_password.errors %}
+                    <span style="color: red;">[{{ error }}]</span><br>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.first_name.label }}<br>
+                {{ form.first_name(size=32) }}<br>
+            </div>
+            <div>
+                {{ form.last_name.label }}<br>
+                {{ form.last_name(size=32) }}<br>
+            </div>
+            <div>
+                {{ form.phone_number.label }}<br>
+                {{ form.phone_number(size=32) }}<br>
+            </div>
+            <div>
+                {{ form.submit() }}
+            </div>
+            <div>
+                <p>Alrady have an account? <a href="{{ url_for('routes.Login') }}">Login</a></p>
+            </div>
+        </form>
 </div>
 {% endblock %}
