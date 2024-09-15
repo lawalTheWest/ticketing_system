@@ -17,21 +17,26 @@
     box-shadow: 15px 15px 17px rgba(0, 0, 0, 0.3);
 }
 
-.login_cls form button {
+.gen {
+    margin: 3px;
+    padding: 5px;
+}
+
+.styled-btn {
     margin: 10px;
     padding: 10px 20px;
     border-radius: 15px;
     transition: all 0.3s ease;
 }
 
-.login_cls form button:hover {
+.styled-btn:hover {
     transition: all 0.3s ease;
     transform: scale(1.04);
     background-color: #2E175D;
     color: #fff;
 }
 
-.login_cls form button:active {
+.styled-btn:active {
     transition: all 0.3s ease;
     transform: scale(0.8);
     background-color: orange;

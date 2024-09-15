@@ -9,6 +9,7 @@ from flask_login import UserMixin
 from datetime import datetime
 from flask_bcrypt import Bcrypt
 from datetime import datetime, timezone
+from werkzeug.security import generate_password_hash  # check_password_hash
 
 bcrypt = Bcrypt()
 
@@ -47,6 +48,7 @@ class User(db.Model, UserMixin):
     tickets = db.relationship('Ticket',
                               backref='user',
                               lazy=True)
+
     appointments = db.relationship('Appointment',
                                    backref='user',
                                    lazy=True)
@@ -56,7 +58,8 @@ class User(db.Model, UserMixin):
                            default=datetime.now(timezone.utc))
     
     def set_password(self, password):
-        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        # self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        self.password = generate_password_hash(password)
         
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password, password)

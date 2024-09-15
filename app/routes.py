@@ -57,17 +57,19 @@ def Login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
-            flash('Logged in SUccessfulyy', 'success')
+            flash('Logged in Successfulyy', 'success')
             return redirect(url_for('routes.Dashboard'))
         else:
-            flash('Invalid Email or Password')
+            flash('Invalid Email or Password', 'danger')
+    else:
+        print(form.errors)
     return render_template('login.html', form=form)
 
 @routes.route('/register', methods=['Get', 'Post'])
 def Register():
     form = RegisterForm()
     if form.validate_on_submit():
-        hashed_password = bycrypt.generate_password_hash(form.password.data, method='scrypt')
+        # hashed_password = bycrypt.generate_password_hash(form.password.data).decode('utf-8')
         new_user = User(username=form.username.data,
                         email=form.email.data,
                         first_name=form.first_name.data,

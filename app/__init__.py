@@ -37,6 +37,7 @@ def create_app():
     '''
     from .routes import routes
     app.register_blueprint(routes)
+    login_manager.init_app(app)
     
     @login_manager.user_loader
     def load_user(user_id):

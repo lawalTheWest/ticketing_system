@@ -1,0 +1,16 @@
+.message,
+#mssg {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-content: center;
+    text-decoration: none;
+}
+
+#mssg {
+    background-color: #ffa6006b;
+    padding: 5px;
+    border: 2px solid orange;
+    border-radius: 15px;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
+}

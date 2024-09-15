@@ -9,48 +9,48 @@
     <h2>Sign Up</h2>
         <form method="POST">
             {{ form.hidden_tag() }}
-            <div>
+            <div  class='gen'>
                 {{ form.username.label }}<br>
                 {{ form.username(size=32) }}<br>
                 {% for error in form.username.errors %}
                     <span style="color: red;">[{{ error }}]</span><br>
                 {% endfor %}
             </div>
-            <div>
+            <div  class='gen'>
                 {{ form.email.label }}<br>
                 {{ form.email(size=32) }}<br>
                 {% for error in form.email.errors %}
                     <span style="color: red;">[{{ error }}]</span><br>
                 {% endfor %}
             </div>
-            <div>
+            <div  class='gen'>
                 {{ form.password.label }}<br>
                 {{ form.password(size=32) }}<br>
                 {% for error in form.password.errors %}
                     <span style="color: red;">[{{ error }}]</span><br>
                 {% endfor %}
             </div>
-            <div>
+            <div  class='gen'>
                 {{ form.confirm_password.label }}<br>
                 {{ form.confirm_password(size=32) }}<br>
                 {% for error in form.confirm_password.errors %}
                     <span style="color: red;">[{{ error }}]</span><br>
                 {% endfor %}
             </div>
-            <div>
+            <div  class='gen'>
                 {{ form.first_name.label }}<br>
                 {{ form.first_name(size=32) }}<br>
             </div>
-            <div>
+            <div  class='gen'>
                 {{ form.last_name.label }}<br>
                 {{ form.last_name(size=32) }}<br>
             </div>
-            <div>
+            <div  class='gen'>
                 {{ form.phone_number.label }}<br>
                 {{ form.phone_number(size=32) }}<br>
             </div>
             <div>
-                {{ form.submit() }}
+                {{ form.submit(class='styled-btn') }}
             </div>
             <div>
                 <p>Alrady have an account? <a href="{{ url_for('routes.Login') }}">Login</a></p>
