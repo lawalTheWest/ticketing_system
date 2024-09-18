@@ -9,7 +9,7 @@
     <div>
         <h2>Login</h2>
     </div>
-    <form method="POST">
+    <form method='POST' action="{{ url_for('routes.Login') }}">
     
         {{ form.hidden_tag() }}
         <div>

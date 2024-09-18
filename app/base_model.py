@@ -4,14 +4,9 @@
         user, ticket, appointment
 '''
 
-from app import db
+from . import db, bcrypt
 from flask_login import UserMixin
-from datetime import datetime
-from flask_bcrypt import Bcrypt, check_password_hash, generate_password_hash
 from datetime import datetime, timezone
-# from werkzeug.security import generate_password_hash
-
-bcrypt = Bcrypt()
 
 class User(db.Model, UserMixin):
     '''User class'''
@@ -30,7 +25,7 @@ class User(db.Model, UserMixin):
                       nullable=False)
     
     # user password - not unique and not null
-    password = db.Column(db.String(255),
+    password_hash = db.Column(db.String(255),
                          nullable=False)
     
     # user's first & last names - not null
@@ -58,11 +53,10 @@ class User(db.Model, UserMixin):
                            default=datetime.now(timezone.utc))
     
     def set_password(self, password):
-        # self.password = bcrypt.generate_password_hash(password).decode('utf-8')
-        self.password = generate_password_hash(password).decode('utf-8')
+        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
         
     def check_password(self, password):
-        return check_password_hash(self.password, password)
+        return bcrypt.check_password_hash(self.password_hash, password)
 
 class Ticket(db.Model):
     '''Class Ticket'''
