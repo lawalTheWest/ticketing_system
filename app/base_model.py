@@ -63,9 +63,12 @@ class Ticket(db.Model):
     id = db.Column(db.Integer,
                    primary_key=True)
     
+    title = db.Column(db.Text,
+                      nullable=False)
+    
     date = db.Column(db.DateTime,
                      nullable=False,
-                     default=datetime.utcnow)
+                     default=datetime.now(timezone.utc))
 
     description = db.Column(db.Text,
                             nullable=False)
@@ -85,6 +88,10 @@ class Appointment(db.Model):
     
     date = db.Column(db.DateTime,
                      nullable=False)
+    
+    date_generated = db.Column(db.DateTime,
+                               nullable=False,
+                               default=datetime.now(timezone.utc))
     
     Time = db.Column(db.Time,
                      nullable=False)
