@@ -58,12 +58,14 @@ nav ul li {
     font-size: 90%;
 }
 
-nav ul li a {
+nav ul li a,
+.edit_profile {
     color: #2E175D;
     text-decoration: none;
 }
 
-nav ul li {
+nav ul li,
+.edit_profile {
     margin: 8px, 0;
     text-align: center;
     width: 80%;
@@ -74,18 +76,21 @@ nav ul li {
     border-radius: 15px;
 }
 
-nav ul li:hover {
+nav ul li:hover,
+.edit_profile:hover {
     background-color: #2E175D;
     border-radius: 15px;
     transform: scale(1.05);
     transition: all 0.3s ease;
 }
 
-nav ul li:hover a {
+nav ul li:hover a,
+.edit_profile:hover {
     color: #fff;
 }
 
-nav ul li:active {
+nav ul li:active,
+.edit_profile:active {
     background: #ffa500;
     transform: scale(0.81);
     transition: all 0.3s ease;
@@ -101,16 +106,21 @@ nav ul li a {
     box-sizing: border-box;
 }
 
+
 main {
     background-color: #fff;
     color: #260049;
     width: 80%;
     margin: 10px 10%;
-    padding: 5px;
+    padding: 10px;
     min-height: 100vh;
     border-radius: 15px;
     justify-content: center;
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+.edit_profile {
+    border: 2px solid #2E175D;
 }
 
 /* footer section */
@@ -128,4 +138,16 @@ footer {
 
 footer p:hover {
     color: #0f0;
+}
+
+.user_profile,
+.user_profile a {
+    background-color: #2E175D;
+    color: #fff;
+    border-radius: 45%;
+}
+
+.user_profile:hover {
+    background-color: #000080;
+    color: #2E175D;
 }
