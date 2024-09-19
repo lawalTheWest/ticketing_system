@@ -1,8 +1,20 @@
 {% extends "layout.html" %}
 
-{% block header %}{% endblock header %}
+{% block header %}
+<link rel='stylesheet' href="{{ url_for('static', filename='./css/dashboard.css') }}">
+{% endblock header %}
 
 {% block contents %}
-<h1>Welcome user</h1>
-<a href="{{ url_for('routes.Logout') }}">logout</a>
+<div>
+    <h1>Welcome {{ current_user.first_name }} {{ current_user.last_name }}</h1>
+    
+</div><br/>
+<hr/>
+<strong>First Name: </strong>{{ current_user.first_name }}<br/>
+<strong>Last Name: </strong>{{ current_user.last_name }}<br/>
+<strong>Username: </strong>{{ current_user.username }}<br/>
+<strong>Email: </strong>{{ current_user.email }} <br/>
+<strong>Phone Number: </strong>{{ current_user.phone_number}}<br/>
+<strong>Member Since: </strong>{{ current_user.created_at }}<br/><br/>
+<a class='edit_profile' href='#'>Edit Profile</a>
 {% endblock contents %}

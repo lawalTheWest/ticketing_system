@@ -25,6 +25,11 @@ nav ul li a {
     text-decoration: none;
 }
 
+/* .user_profile {
+    border: 2px solid #2E175D;
+    border-radius: 45%;
+} */
+
 .the-search {
     max-width: 70px;
 }
