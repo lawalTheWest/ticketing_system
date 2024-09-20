@@ -7,8 +7,9 @@
 {% block contents %}
     <div class='sec-1'>
         <h1>All Tickets</h1>
-        <a class='new_ticket'><button>New Ticket</button></a>
-    </div>
+        <a class='new_ticket' href="{{ url_for('routes.Create_ticket') }}"><button>New Ticket</button></a>
+    </div><br />
+    <hr /><br />
     <table border="1">
            <thead>
         <tr>
