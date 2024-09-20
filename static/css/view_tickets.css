@@ -1,0 +1,39 @@
+.sec-1 {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.new_ticket{
+    margin-right: 30px;
+}
+.new_ticket button {
+    padding: 10px 15px;
+    border-radius: 15px;
+    border: 3px solid #2E175D;
+    background-color: transparent;
+    color: #2E175D;
+    cursor: pointer;
+}
+.new_ticket button {
+    background-color: rgb(24, 223, 24);
+    color: #2E175D;
+}
+/* main .ticket_page a { */
+    /* background-color: #0f0; */
+    /* padding: 20px 0; */
+
+.new_ticket button:hover {
+    background-color: #2E175D;
+    color: #fff;
+    transition: all 0.3s ease;
+    transform: scale(1.2);
+}
+
+.new_ticket button:active {
+    background-color: orange;
+    color: #2E175D;
+    transform: scale(0.8);
+}

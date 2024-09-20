@@ -10,6 +10,8 @@ from datetime import datetime, timezone
 
 class User(db.Model, UserMixin):
     '''User class'''
+    __tablename__ = 'users'
+
     # User id - this is a unique primary key, autoincrement.
     id = db.Column(db.Integer,
                    primary_key=True)
@@ -41,11 +43,11 @@ class User(db.Model, UserMixin):
 
     # tickets & appointment relationship
     tickets = db.relationship('Ticket',
-                              backref='user',
+                              backref='creator',
                               lazy=True)
 
     appointments = db.relationship('Appointment',
-                                   backref='user',
+                                   backref='creator',
                                    lazy=True)
     
     created_at = db.Column(db.DateTime,
@@ -58,31 +60,38 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
 
-class Ticket(db.Model):
-    '''Class Ticket'''
-    id = db.Column(db.Integer,
-                   primary_key=True)
-    
-    title = db.Column(db.Text,
-                      nullable=False)
-    
+from datetime import date
+
+class Ticket(db.Model, UserMixin):
+    '''Ticket class'''
+    __tablename__ = 'tickets'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+
     date = db.Column(db.DateTime,
-                     nullable=False,
-                     default=datetime.now(timezone.utc))
+                           nullable=False,
+                           default=datetime.now(timezone.utc))
 
-    description = db.Column(db.Text,
-                            nullable=False)
-    
-    status = db.Column(db.String(20),
-                       nullable=False,
-                       default='Open')
+    event_date = db.Column(db.Date, nullable=False)
+    status = db.Column(db.String(10), nullable=False, default='Open')
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    user_id = db.Column(db.Integer,
-                        db.ForeignKey('user.id'),
-                        nullable=False)
+    def __repr__(self):
+        return f'<Ticket {self.id} - {self.title}>'
 
-class Appointment(db.Model):
+    def update_status(self):
+        ''' Automatically updates the status based on the event date '''
+        if self.event_date < date.today():
+            self.status = 'Closed'
+        else:
+            self.status = 'Open'
+
+class Appointment(db.Model, UserMixin):
     '''Appointment Class'''
+    __tablename__ = 'appointments'
+
     id = db.Column(db.Integer,
                    primary_key=True)
     
@@ -93,9 +102,9 @@ class Appointment(db.Model):
                                nullable=False,
                                default=datetime.now(timezone.utc))
     
-    Time = db.Column(db.Time,
+    time = db.Column(db.Time,
                      nullable=False)
     
     user_id = db.Column(db.Integer,
-                        db.ForeignKey('user.id'),
+                        db.ForeignKey('users.id'),
                         nullable=False)

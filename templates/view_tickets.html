@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+<link rel='stylesheet' href="{{ url_for('static', filename='./css/view_tickets.css') }}" />
+{% endblock header %}
+
+{% block contents %}
+    <div class='sec-1'>
+        <h1>All Tickets</h1>
+        <a class='new_ticket'><button>New Ticket</button></a>
+    </div>
+    <table border="1">
+           <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Event Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in tickets %}
+        <tr>
+            <td>{{ ticket.title }}</td>
+            <td>{{ ticket.description }}</td>
+            <td>{{ ticket.date }}</td>
+            <td>{{ ticket.event_date }}</td>
+            <td>{{ ticket.status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+{% endblock contents %}

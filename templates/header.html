@@ -8,7 +8,7 @@
         <img src="{{ url_for('static', filename='./images/logo.png') }}" alt="brand logo">
         <h1>CYBERSFORTH - X</h1>
     </div>
-    <div>    
+    <div>
         <ul class='nav-links'>
             <li>
                 <a href="{{ url_for('routes.Home') }}">Home</a>
@@ -17,7 +17,7 @@
                 <a href="{{ url_for('routes.About') }}">About</a>
             </li>
             <li>
-                <a href="#">Tickets</a>
+                <a href="{{ url_for('routes.Ticket_page') }}">Tickets</a>
             </li>
             <li>
                 <a href='#'>History</a>

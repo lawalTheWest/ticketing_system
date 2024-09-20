@@ -1,8 +1,11 @@
+SQLAlchemy
+SQLite
 flask_login
 flask_login --user
 flask_bcrypt
 wtforms
 flask-wtf
+Flask-WTF
 email-validator
 flask_migrate
 flask_migrate --user

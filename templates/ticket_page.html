@@ -1,0 +1,16 @@
+<!-- ticket_page.html -->
+{% extends 'layout.html' %}
+
+{% block header %}
+<link rel='stylesheet' href="{{ url_for('static', filename='./css/ticket_page.css') }}" />
+{% endblock header %}
+
+{% block contents %}
+<div class='ticket_page'>
+    <!-- Create Ticket -->
+    <a href="{{ url_for('routes.Create_ticket') }}"><button class="new_me">New Ticket</button></a><br/><br/>
+
+    <!-- View Tickets -->
+    <a href="{{ url_for('routes.View_tickets') }}"><button>View Tickets</button></a>
+</div>
+{% endblock contents %}
