@@ -11,7 +11,7 @@ if __name__ == "__main__":
     host = '0.0.0.0'
 
     # setting the env. variable default to 10000 if not set
-    port = int(os.environ.get('port', 11000))
+    port = int(os.environ.get('port', 9000))
 
     # Run the flask app
     app.run(host=host, port=port)
