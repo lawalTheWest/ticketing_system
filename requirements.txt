@@ -4,8 +4,8 @@ Flask>=2.0
 Flask-WTF>=0.15
 Flask-Login>=0.5
 Flask-Migrate>=3.0
-Flask-Validator>=1.5
-Flask-Mail>=0.9
+# Flask-Validator
+Flask-Mail
 Flask-SQLAlchemy>=2.5
 SQLAlchemy>=1.4
 flask-cors>=3.0
