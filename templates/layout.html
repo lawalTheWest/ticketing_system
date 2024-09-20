@@ -14,14 +14,26 @@
 
         <main>
             <div class='message'>
+            <!--
                 {% include 'message.html' %}
+                <! Flash Messages -->
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div id="flash-messages" class="flash-message">
+                           {% for message in messages %}
+                               <div class="alert">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
             </div>
+            
             {% block contents %}
 
             {% endblock %}
         </main>
 
         {% include 'footer.html' %}
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{{ url_for('static', filename='./js/index.js') }}"></script>
     </body>
 </html>

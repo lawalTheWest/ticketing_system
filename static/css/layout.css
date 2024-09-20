@@ -5,6 +5,18 @@ body {
     margin: 0;
 }
 
+/* Body Background */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('../images/bg-2.jpeg'); /* Path to your body background image */
+    background-size: cover;
+    background-attachment: fixed; /* Keeps the background static when scrolling */
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #333;
+}
+
 /* styles for header.css */
 nav {
     display: flex;
@@ -43,6 +55,9 @@ nav img:active {
     color: #260049;
     font-size: 30px;
     margin: 5px;
+}
+nav {
+    background-color: #fff;
 }
 
 nav ul {
@@ -106,6 +121,38 @@ nav ul li a {
     box-sizing: border-box;
 }
 
+
+/* Flash message styling */
+.flash-message {
+    /* display: flex; */
+    position: fixed;
+    /* justify-content: center; */
+    /* align-content: center; */
+    /* align-items: center; */
+    text-align: center;
+    background-color: #f0f4c3; /* Light background */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.flash-message .alert {
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 5px;
+    
+}
+
+.flash-message .alert:last-child {
+    margin-bottom: 0;
+}
+
+/* .message {
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+} */
 
 main {
     background-color: #fff;

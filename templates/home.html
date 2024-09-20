@@ -1,4 +1,82 @@
 {% extends 'layout.html' %}
+
+{% block header %}
+<link rel='stylesheet' href="{{ url_for('static', filename='./css/home.css') }}"/>
+{% endblock header %}
+
 {% block contents %}
-<h1>Home page</h1>
+
+ <!-- Hero Section -->
+    <section>
+        <div class="hero">
+            <h1>Streamline Your Booking Experience</h1>
+            <p>Effortless ticketing and appointment scheduling, all in one place.</p>
+            <a href="{{ url_for('routes.Register') }}" class="cta-button">Get Started</a>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about">
+        <h2>About Us</h2>
+        <p>Welcome to the Universal Ticketing and Appointment Booking System,
+            where convenience meets efficiency. 
+            Whether you're managing events, services, or appointments, 
+            our platform is designed to simplify your booking process.
+        </p>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+        <h2>Features</h2>
+        <ul>
+            <li><strong>User-Friendly Interface:</strong> Navigate easily with an intuitive design that makes booking quick and hassle-free.</li>
+            <li><strong>Real-Time Availability:</strong> Check availability in real-time to ensure you secure your spot or ticket instantly.</li>
+            <li><strong>Customizable Options:</strong> Tailor your booking experience with customizable forms and services to meet your specific needs.</li>
+            <!-- <li><strong>Secure Payments:</strong> Enjoy peace of mind with our secure payment gateway that protects your transactions.</li> -->
+            <li><strong>Automated Notifications:</strong> Receive instant confirmations and reminders to never miss an appointment or event.</li>
+            <li><strong>Comprehensive Reporting:</strong> Access detailed reports and analytics to manage your bookings effectively.</li>
+        </ul>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works">
+        <h2>How It Works</h2>
+        <ol>
+            <li><strong>Sign Up:</strong> Create your account and set up your profile.</li>
+            <li><strong>Choose Services:</strong> Select the type of appointment or event you want to book.</li>
+            <li><strong>Select Date & Time:</strong> Pick from available slots tailored to your schedule.</li>
+            <!-- <li><strong>Make Payment:</strong> Complete your booking securely online.</li> -->
+            <li><strong>Confirmation:</strong> Receive instant confirmation via email and SMS.</li>
+        </ol>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+        <h2>Testimonials</h2>
+        <blockquote>
+            <p>"The system is incredibly easy to use! I booked my tickets in minutes!"</p>
+            <footer>- John D.</footer>
+        </blockquote>
+        <blockquote>
+            <p>"This has transformed how we manage appointments. Highly recommend!"</p>
+            <footer>- Sarah L.</footer>
+        </blockquote>
+    </section>
+
+    <!-- Get Started Section -->
+    <section id="get-started">
+        <h2>Get Started Today!</h2>
+        <p>Join thousands of satisfied users who have streamlined their booking processes. Sign up now!</p>
+        <a href="{{ url_for('routes.Register') }}" class="cta-button">Sign Up</a>
+    </section>
+
+    <!-- Footer Section -->
+    <!-- 
+        <div class="social-media">
+            <a href="#">Facebook</a>
+            <a href="#">Twitter</a>
+            <a href="#">Instagram</a>
+        </div>
+    -->
+
 {% endblock %}
