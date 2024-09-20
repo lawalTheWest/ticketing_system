@@ -1,11 +1,11 @@
-SQLAlchemy
-SQLite
-flask_login
-flask_login --user
-flask_bcrypt
-wtforms
-flask-wtf
+Flask
 Flask-WTF
-email-validator
-flask_migrate
-flask_migrate --user
+Flask-Login
+Flask-Migrate
+Flask-Validator
+Flask-Mail
+Flask-SQLAlchemy
+Flask-Migrate
+SQLAlchemy
+flask-cors
+gunicorn
