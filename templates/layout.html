@@ -14,9 +14,7 @@
 
         <main>
             <div class='message'>
-            <!--
-                {% include 'message.html' %}
-                <! Flash Messages -->
+                <!-- Flash Messages -->
                 {% with messages = get_flashed_messages() %}
                     {% if messages %}
                         <div id="flash-messages" class="flash-message">
