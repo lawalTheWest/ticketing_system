@@ -1,6 +1,8 @@
 {% extends 'layout.html' %}
 
-{% block header %}{% endblock header %}
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='./css/create_ticket.css') }}" />
+{% endblock header %}
 
 {% block contents %}
 <!-- Create ticket form -->
@@ -8,27 +10,27 @@
     {{ form.hidden_tag() }}
     <div>
         {{ form.title.label }}<br>
-        {{ form.title(size=32) }}<br>
+        {{ form.title(class='solid-div', size=32) }}<br>
         {% for error in form.title.errors %}
             <span style="color: red;">{{ error }}</span><br>
         {% endfor %}
     </div>
     <div>
         {{ form.description.label }}<br>
-        {{ form.description(rows=5, cols=50) }}<br>
+        {{ form.description(class='solid-div', rows=5, cols=50) }}<br>
         {% for error in form.description.errors %}
             <span style="color: red;">{{ error }}</span><br>
         {% endfor %}
     </div>
     <div>
         {{ form.event_date.label }}<br>
-        {{ form.event_date() }}<br>
+        {{ form.event_date(class='solid-div') }}<br>
         {% for error in form.event_date.errors %}
             <span style="color: red;">{{ error }}</span><br>
         {% endfor %}
     </div>
     <div>
-        {{ form.submit() }}
+        {{ form.submit(class='tick-btn') }}
     </div>
 </form>
 

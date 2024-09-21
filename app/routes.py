@@ -3,71 +3,16 @@
 
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
+from .forms import LoginForm, RegisterForm, TicketForm, EmailForm
 from wtforms import StringField, PasswordField, SubmitField,  TextAreaField, SelectField, DateField
 from . import db, bcrypt
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_wtf import FlaskForm
 from .base_model import User, Ticket
 from datetime import date
-# from flask_mail import Message
-# from itsdangerous import URLSafeTimedSerializer as Serializer
-# from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 import app
 
 routes = Blueprint('routes', __name__)
-
-'''Registration form'''
-class RegisterForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=4,max=80)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    first_name = StringField('First Name', validators=[DataRequired(), Length(min=4, max=80)])
-    last_name = StringField('Last Name', validators=[DataRequired(), Length(min=4,max=80)])
-    phone_number = StringField('Phone Number', validators=[DataRequired(), Length(min=8, max=20)])
-    submit = SubmitField('Register')
-
-    def validate_username(self, username):
-        '''validates username so as to have a unique uname'''
-        user = User.query.filter_by(username=username.data).first()
-        if user:
-            raise ValidationError('Username not Available!')
-
-    def validate_email(self, email):
-        '''validate user.email for uniqueness'''
-        user = User.query.filter_by(email=email.data).first()
-        if user:
-            raise ValidationError('Email not Available!')
-    
-    def validate_phone_number(self, phone_number):
-        '''Validates phone number to ensure it's unique'''
-        user = User.query.filter_by(phone_number=phone_number.data).first()
-        if user:
-            flash('Invalid credentials!')
-            raise ValidationError('Phone number already registered!')
-
-class LoginForm(FlaskForm):
-    '''Login form received from the user Interface'''
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Login')
-
-class EmailForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    submit = SubmitField('Request Password Reset')
-    
-# class TicketForm(FlaskForm):
-    # title = StringField('Title', validators=[DataRequired()])
-    # description = TextAreaField('Description', validators=[DataRequired()])
-    # date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
-    # event_date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
-    # submit = SubmitField('Create Ticket')
-
-class TicketForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    description = TextAreaField('Description', validators=[DataRequired()])
-    event_date = DateField('Event Date', format='%Y-%m-%d', validators=[DataRequired()])
-    submit = SubmitField('Create Ticket')
 
 '''Home route'''
 @routes.route('/')
@@ -155,56 +100,13 @@ def Dashboard():
 '''Creating the tickets'''
 @routes.route('/ticket_page')
 def Ticket_page():
+    '''Defines the function to the ticket page'''
     return render_template('ticket_page.html')
-
-# @routes.route('/create_ticket', methods=['GET', 'POST'])
-# @login_required
-# def Create_ticket():
-#     form = TicketForm()
-#     if form.validate_on_submit():
-#         # Determine the status based on event date
-#         status = 'Closed' if form.event_date.data < date.today() else 'Open'
-
-#         '''Create new ticket'''
-#         new_ticket = Ticket(
-#             title=form.title.data,
-#             description=form.description.data,
-#             event_date=form.event_date.data,
-#             date=form.date.data,
-#             status=status,  # Set the initial status
-#             user_id=current_user.id  # Set the current user's ID
-#         )
-#         try:
-#             db.session.add(new_ticket)
-#             db.session.commit()
-#             flash('Ticket created successfully!', 'success')
-#             return redirect(url_for('routes.View_tickets'))
-#         except Exception as e:
-#             db.session.rollback()
-#             flash(f'Error creating ticket: {str(e)}', 'danger')
-#             return redirect(url_for('routes.Create_ticket'))
-#     return render_template('create_ticket.html', form=form)
-
-# @routes.route('/tickets')
-# @login_required
-# def View_tickets():
-#     # Fetch all tickets from the database
-#     tickets = Ticket.query.all()
-
-#     # Update the status of each ticket based on the event date
-#     for ticket in tickets:
-#         ticket.update_status()
-
-#     # Commit any status changes to the database
-#     db.session.commit()
-
-#     return render_template('view_tickets.html', tickets=tickets)
-
-
 
 @routes.route('/create_ticket', methods=['GET', 'POST'])
 @login_required
 def Create_ticket():
+    '''Defines the function to create new tickets'''
     form = TicketForm()
     if form.validate_on_submit():
         status = 'Closed' if form.event_date.data < date.today() else 'Open'
@@ -221,6 +123,11 @@ def Create_ticket():
 @routes.route('/tickets')
 @login_required
 def View_tickets():
+    '''
+        Defines the function to view all tickets created:
+            - Closed tickets and
+            - Opened tickets
+    '''
     tickets = Ticket.query.filter_by(user_id=current_user.id).all()
     for ticket in tickets:
         ticket.update_status()
