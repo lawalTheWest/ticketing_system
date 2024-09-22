@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block title %}Book Appointment{% endblock title %}
+
+{% block header %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='book_appointment.css') }}">
+{% endblock header %}
+
+{% block contents %}
+    <div class="container">
+        <h1>Book Appointment</h1>
+        <form action="{{ url_for('routes.book_appointment') }}" method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label for="date">Date</label>
+                {{ form.date(class="form-control", id="date") }}
+            </div>
+
+            <div class="form-group">
+                <label for="time">Time</label>
+                {{ form.time(class="form-control", id="time") }}
+            </div>
+
+            <div class="form-group">
+                <label for="purpose">Purpose</label>
+                {{ form.purpose(class="form-control", id="purpose") }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Book Appointment</button>
+        </form>
+    </div>
+{% endblock contents %}

@@ -11,6 +11,13 @@
     <a href="{{ url_for('routes.Create_ticket') }}"><button class="new_me">New Ticket</button></a><br/><br/>
 
     <!-- View Tickets -->
-    <a href="{{ url_for('routes.View_tickets') }}"><button>View Tickets</button></a>
+    <a href="{{ url_for('routes.View_tickets') }}"><button>View Tickets</button></a><br /><br />
+
+    <!-- Book Appointment -->
+    <a href="{{ url_for('routes.book_appointment') }}"><button class='new_me'>Book Appointment</button></a><br /><br />
+
+    <!-- View appointments -->
+    <a href="{{ url_for('routes.view_appointments') }}"><button>View Appointments</button></a><br /><br />
+
 </div>
 {% endblock contents %}

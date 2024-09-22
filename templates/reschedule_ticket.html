@@ -1,0 +1,17 @@
+<!-- reschedule_ticket.html -->
+{% extends 'layout.html' %}
+
+{% block title %}Reschedule ticket{% endblock title %}
+
+{% block header %}
+{% endblock header %}
+
+{% block contents %}
+<form method="POST">
+    <div class="form-group">
+        <label for="new_date">New Schedule Date</label><br/><br/>
+        <input type="date" name="new_date" class="form-control" id="new_date" required>
+    </div><br/>
+    <button type="submit" class="btn btn-primary">Reschedule Ticket</button><br/>
+</form>
+{% endblock contents %}
