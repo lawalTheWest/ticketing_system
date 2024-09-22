@@ -45,7 +45,6 @@ def create_app():
     from .base_model import User
     @login_manager.user_loader
     def load_user(user_id):
-        # from .base_model import User
         return User.query.get(int(user_id))
     
     return app

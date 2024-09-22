@@ -1,16 +1,12 @@
 #!/usr/bin/env python3
 # app/routes.py
 
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
-from .forms import LoginForm, RegisterForm, TicketForm, EmailForm
-from wtforms import StringField, PasswordField, SubmitField,  TextAreaField, SelectField, DateField
+from .forms import LoginForm, RegisterForm, TicketForm, EmailForm, AppointmentForm, RescheduleTicketForm
 from . import db, bcrypt
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from flask_wtf import FlaskForm
-from .base_model import User, Ticket
-from datetime import date
-import app
+from .base_model import User, Ticket, Appointment
+from datetime import date, datetime, timezone
 
 routes = Blueprint('routes', __name__)
 
@@ -25,6 +21,12 @@ def Home():
 def About():
     '''defines the about function'''
     return render_template('about.html')
+
+
+'''
+    User authentication
+'''
+
 
 '''Login route'''
 @routes.route('/login', methods=['GET', 'POST'])
@@ -97,7 +99,11 @@ def Dashboard():
     return render_template('dashboard.html')
 
 
-'''Creating the tickets'''
+'''
+    Creating the tickets
+'''
+
+
 @routes.route('/ticket_page')
 def Ticket_page():
     '''Defines the function to the ticket page'''
@@ -133,3 +139,174 @@ def View_tickets():
         ticket.update_status()
     db.session.commit()
     return render_template('view_tickets.html', tickets=tickets)
+
+'''Reschedule tickets'''
+@routes.route('/reschedule_ticket/<int:ticket_id>', methods=['GET', 'POST'])
+@login_required
+def Reschedule_ticket(ticket_id):
+    '''logic for rescheduling a ticket'''
+    # Fetch the ticket from the database using the ticket_id
+    form = RescheduleTicketForm()
+
+    ticket = Ticket.query.get_or_404(ticket_id)
+
+    # if request.method == 'POST':
+    #     '''Process the form and reschedule logic'''
+    #     new_date = request.form['new_date']
+
+    #     '''Update the ticket with the new schedule'''
+    #     ticket.event_date = new_date
+    #     ticket.status = 'Closed' if form.new_date.data < datetime.now(timezone.utc) else 'Open'
+
+    #     db.session.commit()
+
+    #     flash('Ticket rescheduled successfully!', 'success')
+    #     return redirect(url_for('routes.View_tickets'))
+
+    # return render_template('reschedule_ticket.html', ticket=ticket)
+
+    if  request.method == 'POST':  # and form.validate_on_submit():
+        # if form.validate_on_submit(): 
+        new_date = form.new_date.data  # This will return a 'date' object
+
+        # Convert 'new_date' (date object) to a 'datetime' object with time set to 00:00:00
+        new_datetime = datetime.combine(new_date, datetime.min.time(), tzinfo=timezone.utc)
+
+        # Update the ticket with the new schedule
+        ticket.event_date = new_datetime
+        ticket.status = 'Closed' if new_datetime < datetime.now(timezone.utc) else 'Open'
+
+        db.session.commit()
+
+        flash('Ticket rescheduled successfully!', 'success')
+        return redirect(url_for('routes.View_tickets'))
+
+    return render_template('reschedule_ticket.html', form=form, ticket=ticket)
+
+
+'''Cancel tickets'''
+@routes.route('/cancel_ticket/<int:ticket_id>', methods=['GET', 'POST'])
+@login_required
+def Cancel_ticket(ticket_id):
+    ''' logics for cancelling a ticket'''
+
+    '''Fetch the ticket from the database using the ticket_id'''
+    ticket = Ticket.query.get_or_404(ticket_id)
+
+    '''update the ticket status to canceled'''
+    ticket.status = 'canceled'
+
+    db.session.commit()
+
+    flash('Ticket canceled successfully!', 'success')
+    return redirect(url_for('routes.View_tickets'))
+
+
+'''deleting a ticket'''
+@routes.route('/delete_ticket/<int:ticket_id>', methods=['GET', 'POST'])
+@login_required
+def Delete_ticket(ticket_id):
+    ''' logics for deleting a ticket'''
+
+    '''Fetch the ticket from the database using the ticket_id'''
+    ticket = Ticket.query.get_or_404(ticket_id)
+
+    '''deletes ticket'''
+    db.session.delete(ticket)
+
+    db.session.commit()
+
+    flash('Ticket deleted successfully!', 'success')
+    return redirect(url_for('routes.View_tickets'))
+
+
+'''
+    Appointment booking section
+'''
+
+
+@routes.route('/book_appointment', methods=['GET', 'POST'])
+@login_required
+def book_appointment():
+    '''defines the routes for appointment booking functionality'''
+    form = AppointmentForm()
+    if form.validate_on_submit():
+        appointment_date = datetime.combine(form.date.data, form.time.data)
+
+        # Check for conflicts
+        conflicting_appointments = Appointment.query.filter_by(user_id=current_user.id, date=form.date.data).filter(Appointment.time == form.time.data).first()
+        
+        if conflicting_appointments:
+            flash('This time slot is already booked for another appointment. Please choose another time.', 'danger')
+            return redirect(url_for('routes.book_appointment'))
+
+        # If no conflict, create appointment
+        new_appointment = Appointment(date=appointment_date, time=form.time.data, user_id=current_user.id, purpose=form.purpose.data)
+        db.session.add(new_appointment)
+        db.session.commit()
+
+        flash('Appointment booked successfully!', 'success')
+        return redirect(url_for('routes.view_appointments'))
+
+    return render_template('book_appointment.html', form=form)
+
+'''View appointments history'''
+@routes.route('/view_appointments', methods=['GET'])
+@login_required
+def view_appointments():
+    '''View all appointments for the current user'''
+    appointments = Appointment.query.filter_by(user_id=current_user.id).all()
+    return render_template('view_appointments.html', appointments=appointments)
+
+'''Canceling appointments'''
+@routes.route('/cancel_appointment/<int:appointment_id>', methods=['POST'])
+@login_required
+def cancel_appointment(appointment_id):
+    '''Cancel an appointment'''
+    appointment = Appointment.query.get_or_404(appointment_id)
+    
+    # Check if the user is allowed to cancel this appointment
+    if appointment.creator != current_user:
+        flash('You are not authorized to cancel this appointment.', 'danger')
+        return redirect(url_for('routes.view_appointments'))
+
+    db.session.delete(appointment)
+    db.session.commit()
+    flash('Appointment cancelled successfully.', 'success')
+    return redirect(url_for('routes.view_appointments'))
+
+
+'''Rescheduling of appointments'''
+@routes.route('/reschedule_appointment/<int:appointment_id>', methods=['GET', 'POST'])
+@login_required
+def reschedule_appointment(appointment_id):
+    '''Reschedule an appointment'''
+    appointment = Appointment.query.get_or_404(appointment_id)
+    
+    # Ensure the user owns this appointment
+    if appointment.creator != current_user:
+        flash('You are not authorized to reschedule this appointment.', 'danger')
+        return redirect(url_for('routes.view_appointments'))
+
+    form = AppointmentForm()
+    
+    if form.validate_on_submit():
+        new_date = datetime.combine(form.date.data, form.time.data)
+
+        # Check for conflicts
+        conflicting_appointments = Appointment.query.filter_by(user_id=current_user.id, date=form.date.data).filter(Appointment.time == form.time.data).first()
+
+        if conflicting_appointments:
+            flash('This time slot is already booked for another appointment. Please choose another time.', 'danger')
+            return redirect(url_for('routes.reschedule_appointment', appointment_id=appointment_id))
+
+        # Update the appointment details
+        appointment.date = new_date
+        appointment.time = form.time.data
+        appointment.purpose = form.purpose.data
+        db.session.commit()
+
+        flash('Appointment rescheduled successfully!', 'success')
+        return redirect(url_for('routes.view_appointments'))
+
+    return render_template('reschedule_appointment.html', form=form, appointment=appointment)

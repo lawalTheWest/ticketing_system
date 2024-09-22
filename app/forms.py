@@ -1,8 +1,11 @@
 ''' all forms here in forms.py'''
 
-from wtforms import StringField, PasswordField, SubmitField,  TextAreaField, SelectField, DateField
+from flask import flash
+from wtforms import StringField, PasswordField, SubmitField,  TextAreaField, SelectField, DateField, TimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_wtf import FlaskForm
+from datetime import datetime
+from .base_model import User, Appointment
 
 class RegisterForm(FlaskForm):
     '''the registration form class'''
@@ -51,3 +54,25 @@ class TicketForm(FlaskForm):
     description = TextAreaField('Description', validators=[DataRequired()])
     event_date = DateField('Event Date', format='%Y-%m-%d', validators=[DataRequired()])
     submit = SubmitField('Create Ticket')
+
+class RescheduleTicketForm(FlaskForm):
+    new_date = DateField('New Schedule Date', format='%Y-%m-%d', validators=[DataRequired()])
+    submit = SubmitField('Reschedule Ticket')
+
+
+class AppointmentForm(FlaskForm):
+    '''Form for creating appointments'''
+    date = DateField('Appointment Date', format='%Y-%m-%d', validators=[DataRequired()])
+    time = TimeField('Appointment Time', format='%H:%M', validators=[DataRequired()])
+    purpose = TextAreaField('Purpose of Appointment', validators=[DataRequired()])
+    submit = SubmitField('Book Appointment')
+
+    def validate_date(self, date):
+        '''Check if the appointment is in the future'''
+        if date.data < datetime.now().date():
+            raise ValidationError('Appointment date must be in the future.')
+
+    def validate_time(self, time):
+        '''Ensure the time is valid'''
+        if datetime.combine(self.date.data, time.data) < datetime.now():
+            raise ValidationError('Appointment time must be in the future.')
