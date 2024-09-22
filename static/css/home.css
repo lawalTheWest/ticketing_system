@@ -25,12 +25,13 @@ h1 {
     color: #fff;
     text-decoration: none;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .cta-button:hover {
     transform: scale(1.2);
-    background-color: aquamarine;
-    color: #2e175d;
+    background-color: #2e175d;
+    color: #fff;
 }
 
 .cta-button:active {
