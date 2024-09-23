@@ -12,36 +12,46 @@ class User(db.Model, UserMixin):
     '''User class'''
     __tablename__ = 'users'
 
-    # User id - this is a unique primary key, autoincrement.
+    ''' User id - this is a unique primary key, autoincrement.'''
     id = db.Column(db.Integer,
                    primary_key=True)
     
-    # username - unique and not null
+    '''username - unique and not null'''
     username = db.Column(db.String(80),
                          unique=True,
                          nullable=False)
     
-    # user email - unique, not null
+    '''Admin or not'''
+    is_admin = db.Column(db.Boolean, default=False) 
+    
+    '''name of business or organisation'''
+    business_name = db.Column(db.String(200),
+                              default='CYBERSFORTH X SERVICES')
+    
+    '''business logo'''
+    profile_picture = db.Column(db.String(120),
+                                nullable=True)
+    
+    '''user email - unique, not null'''
     email = db.Column(db.String(120),
                       unique=True,
                       nullable=False)
     
-    # user password - not unique and not null
+    '''user password - not unique and not null'''
     password_hash = db.Column(db.String(255),
                          nullable=False)
     
-    # user's first & last names - not null
+    '''user's first & last names - not null'''
     first_name = db.Column(db.String(50),
                            nullable=False)
     last_name = db.Column(db.String(50),
                           nullable=False)
     
-    # user's phone number - unique, not null
+    '''user's phone number - unique, not null'''
     phone_number = db.Column(db.String(15),
-                             unique=True,
-                             nullable=False)
+                             nullable=True)
 
-    # tickets & appointment relationship
+    ''' tickets & appointment relationship'''
     tickets = db.relationship('Ticket',
                               backref='creator',
                               lazy=True)
@@ -66,16 +76,39 @@ class Ticket(db.Model, UserMixin):
     '''Ticket class'''
     __tablename__ = 'tickets'
 
+    '''details of ticket'''
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
 
+    '''details of client / customer'''
+    client_first_name = db.Column(db.String(80),
+                                  nullable=True)
+    
+    client_last_name = db.Column(db.String(80),
+                                 nullable=True)
+    
+    client_middle_name = db.Column(db.String(80),
+                                   nullable=True)
+    
+    client_email = db.Column(db.String(80),
+                             unique=False,
+                             nullable=True)
+    
+    client_phone_number = db.Column(db.String(20),
+                                    unique=False,
+                                    nullable=False,
+                                    default='')
+    '''Ticket details '''
     date = db.Column(db.DateTime,
                            nullable=False,
                            default=datetime.now(timezone.utc))
 
-    event_date = db.Column(db.Date, nullable=False)
+    event_date = db.Column(db.Date, nullable=False,
+                           default=datetime.now(timezone.utc))
+
     status = db.Column(db.String(10), nullable=False, default='Open')
+
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):

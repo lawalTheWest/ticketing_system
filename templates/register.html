@@ -7,12 +7,26 @@
 <div class='login_cls'>
     <!-- <h3>Login</h3> -->
     <h2>Sign Up</h2>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <div  class='gen'>
                 {{ form.username.label }}<br>
                 {{ form.username(size=32) }}<br>
                 {% for error in form.username.errors %}
+                    <span style="color: red;">[{{ error }}]</span><br>
+                {% endfor %}
+            </div>
+            <div  class='gen'>
+                {{ form.business_name.label }}<br>
+                {{ form.business_name(size=32) }}<br>
+                {% for error in form.business_name.errors %}
+                    <span style="color: red;">[{{ error }}]</span><br>
+                {% endfor %}
+            </div>
+            <div class='gen'>
+                {{ form.profile_picture.label }}<br>
+                {{ form.profile_picture() }}<br>
+                {% for error in form.profile_picture.errors %}
                     <span style="color: red;">[{{ error }}]</span><br>
                 {% endfor %}
             </div>

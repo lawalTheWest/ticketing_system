@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from config import Config
-from flask import Flask, url_for
+from flask import Flask, url_for, current_app
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -27,6 +27,9 @@ def create_app():
     
     '''database configuration'''
     app.config.from_object(Config)
+    # app.config['UPLOAD_FOLDER'] = os.path.join(current_app.root_path, 'static/profile_pics')
+    # app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Set a max upload size of 16MB
+
 
     ''' initializing the app with extesions'''
     db.init_app(app)

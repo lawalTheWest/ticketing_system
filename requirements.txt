@@ -5,7 +5,7 @@ Flask-WTF>=0.15
 Flask-Login>=0.5
 Flask-Migrate>=3.0
 flask-bcrypt
-# Flask-Validator
+Flask-Validator
 Flask-Mail
 Flask-SQLAlchemy>=2.5
 SQLAlchemy>=1.4

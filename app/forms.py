@@ -1,15 +1,18 @@
 ''' all forms here in forms.py'''
 
 from flask import flash
-from wtforms import StringField, PasswordField, SubmitField,  TextAreaField, SelectField, DateField, TimeField
+from wtforms import StringField, PasswordField, SubmitField,  TextAreaField, SelectField, DateField, TimeField, FileField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_wtf import FlaskForm
 from datetime import datetime
-from .base_model import User, Appointment
+from .base_model import User
+from flask_wtf.file import FileAllowed
 
 class RegisterForm(FlaskForm):
     '''the registration form class'''
     username = StringField('Username', validators=[DataRequired(), Length(min=4,max=80)])
+    business_name = StringField('Business Name', validators=[DataRequired(), Length(min=1, max=200)])
+    profile_picture = FileField('Business Logo / Profile Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
@@ -53,12 +56,16 @@ class TicketForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     event_date = DateField('Event Date', format='%Y-%m-%d', validators=[DataRequired()])
+    client_first_name = StringField('Client First Name', validators=[DataRequired(), Length(min=2, max=80)])
+    client_last_name = StringField('Client Last Name', validators=[DataRequired(), Length(min=2, max=80)])
+    client_middle_name = StringField('Client Middle Name', validators=[DataRequired(), Length(min=2, max=80)])
+    client_email = StringField('Client Email', validators=[DataRequired(), Email(), Length(min=2, max=80)])
+    client_phone_number = StringField('Client Phone Number', validators=[DataRequired(), Length(min=2, max=20)])
     submit = SubmitField('Create Ticket')
 
 class RescheduleTicketForm(FlaskForm):
     new_date = DateField('New Schedule Date', format='%Y-%m-%d', validators=[DataRequired()])
     submit = SubmitField('Reschedule Ticket')
-
 
 class AppointmentForm(FlaskForm):
     '''Form for creating appointments'''

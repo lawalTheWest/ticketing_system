@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # app/routes.py
 
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_user, logout_user, login_required, current_user
 from .forms import LoginForm, RegisterForm, TicketForm, EmailForm, AppointmentForm, RescheduleTicketForm
 from . import db, bcrypt
 from .base_model import User, Ticket, Appointment
 from datetime import date, datetime, timezone
+from werkzeug.utils import secure_filename
+import os
 
 routes = Blueprint('routes', __name__)
 
@@ -57,7 +59,48 @@ def Login():
     return render_template('login.html', form=form)
 
 '''register route'''
-@routes.route('/register', methods=['Get', 'Post'])
+# @routes.route('/register', methods=['Get', 'Post'])
+# def Register():
+#     '''define registration function and its logics'''
+#     form = RegisterForm()
+
+#     '''validate credentials'''
+#     if form.validate_on_submit():
+#         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+
+#         if form.profile_picture.data:
+#             profile_picture_file = form.profile_picture.data
+#             filename = secure_filename(profile_picture_file.filename)  # Make filename safe
+#             '''
+#                 making the path to save the profile picture and
+#                 saving it in the directory
+#             '''
+#             file_path = os.path.join(current_app.root_path, 'static/profile_pics', filename)
+#             profile_picture_file.save(file_path)
+
+#         '''create new user instance'''
+#         new_user = User(username=form.username.data,
+#                         email=form.email.data,
+#                         business_name=form.business_name.data,
+#                         profile_picture=filename if form.profile_picture.data else None,
+#                         first_name=form.first_name.data,
+#                         last_name=form.last_name.data,
+#                         phone_number=form.phone_number.data)
+#         new_user.set_password(form.password.data)
+#         '''Check uniqueness for phone number'''
+#         existing_user = User.query.filter_by(phone_number=form.phone_number.data).first()
+#         if existing_user:
+#             flash('Phone number is already registered. Please use a different number.', 'danger')
+#             return redirect(url_for('routes.Register'))
+
+#         db.session.add(new_user)
+#         db.session.commit()
+#         flash('Account Created Successfully! You can now Log in.', 'success')
+#         return redirect(url_for('routes.Login'))
+#     return render_template('register.html', form=form)
+
+
+@routes.route('/register', methods=['GET', 'POST'])
 def Register():
     '''define registration function and its logics'''
     form = RegisterForm()
@@ -65,23 +108,50 @@ def Register():
     '''validate credentials'''
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        new_user = User(username=form.username.data,
-                        email=form.email.data,
-                        first_name=form.first_name.data,
-                        last_name=form.last_name.data,
-                        phone_number=form.phone_number.data)
-        new_user.set_password(form.password.data)
-        # Check uniqueness for phone number
+        filename = None
+
+        if form.profile_picture.data:
+            profile_picture_file = form.profile_picture.data
+            # Validate file type for security purposes
+            ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+            if not ('.' in profile_picture_file.filename and profile_picture_file.filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS):
+                flash('Invalid file type for profile picture. Only images are allowed.', 'danger')
+                return redirect(url_for('routes.Register'))
+
+            # Create a safe filename
+            filename = secure_filename(profile_picture_file.filename)
+            '''make the path to save the profile picture and save it in the directory'''
+            file_path = os.path.join(current_app.root_path, 'static/profile_pics', filename)
+            profile_picture_file.save(file_path)
+
+        '''Check uniqueness for phone number'''
         existing_user = User.query.filter_by(phone_number=form.phone_number.data).first()
         if existing_user:
             flash('Phone number is already registered. Please use a different number.', 'danger')
             return redirect(url_for('routes.Register'))
 
+        '''create new user instance'''
+        new_user = User(username=form.username.data,
+                        email=form.email.data,
+                        business_name=form.business_name.data,
+                        profile_picture=filename,
+                        first_name=form.first_name.data,
+                        last_name=form.last_name.data,
+                        phone_number=form.phone_number.data,
+                        # password=hashed_password
+                        )
+        new_user.set_password(form.password.data)
+
         db.session.add(new_user)
         db.session.commit()
-        flash('Account Created Successfully! You can now Log in.', 'success')
+
+        flash('Account Created Successfully! You can now log in.', 'success')
+        print(f"File saved to {file_path}")
         return redirect(url_for('routes.Login'))
+    
     return render_template('register.html', form=form)
+
+
 
 '''logout route'''
 @routes.route('/logout', methods=['GET', 'POST'])
@@ -98,12 +168,9 @@ def Logout():
 def Dashboard():
     return render_template('dashboard.html')
 
-
 '''
     Creating the tickets
 '''
-
-
 @routes.route('/ticket_page')
 def Ticket_page():
     '''Defines the function to the ticket page'''
@@ -140,6 +207,29 @@ def View_tickets():
     db.session.commit()
     return render_template('view_tickets.html', tickets=tickets)
 
+'''View individual ticket'''
+@routes.route('/ticket/<int:ticket_id>', methods=['GET'])
+@login_required
+def View_ticket(ticket_id):
+    '''
+        View a single ticket by ticket_id.
+        Ensures that the ticket is only viewable by the user who created it.
+    '''
+    # Fetch the ticket from the database using the ticket_id
+    ticket = Ticket.query.get_or_404(ticket_id)
+
+    # Ensure that the current user is the one who created the ticket
+    if ticket.user_id != current_user.id:
+        flash("You do not have permission to view this ticket.", "danger")
+        return redirect(url_for('routes.View_tickets'))
+
+    # Fetch the user's details (assuming you have a relationship with User model)
+    user = User.query.get(ticket.user_id)
+
+    # Render the ticket details page
+    return render_template('view_ticket.html', ticket=ticket, user=user)
+
+
 '''Reschedule tickets'''
 @routes.route('/reschedule_ticket/<int:ticket_id>', methods=['GET', 'POST'])
 @login_required
@@ -149,21 +239,6 @@ def Reschedule_ticket(ticket_id):
     form = RescheduleTicketForm()
 
     ticket = Ticket.query.get_or_404(ticket_id)
-
-    # if request.method == 'POST':
-    #     '''Process the form and reschedule logic'''
-    #     new_date = request.form['new_date']
-
-    #     '''Update the ticket with the new schedule'''
-    #     ticket.event_date = new_date
-    #     ticket.status = 'Closed' if form.new_date.data < datetime.now(timezone.utc) else 'Open'
-
-    #     db.session.commit()
-
-    #     flash('Ticket rescheduled successfully!', 'success')
-    #     return redirect(url_for('routes.View_tickets'))
-
-    # return render_template('reschedule_ticket.html', ticket=ticket)
 
     if  request.method == 'POST':  # and form.validate_on_submit():
         # if form.validate_on_submit(): 

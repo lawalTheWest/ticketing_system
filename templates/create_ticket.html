@@ -9,23 +9,74 @@
 <form method="POST" action="{{ url_for('routes.Create_ticket') }}">
     {{ form.hidden_tag() }}
     <div>
-        {{ form.title.label }}<br>
+        <strong>
+        {{ form.title.label }}
+        </strong><br />
         {{ form.title(class='solid-div', size=32) }}<br>
         {% for error in form.title.errors %}
             <span style="color: red;">{{ error }}</span><br>
         {% endfor %}
     </div>
     <div>
-        {{ form.description.label }}<br>
+        <strong>
+        {{ form.description.label }}
+        </strong><br />
         {{ form.description(class='solid-div', rows=5, cols=50) }}<br>
         {% for error in form.description.errors %}
             <span style="color: red;">{{ error }}</span><br>
         {% endfor %}
     </div>
     <div>
-        {{ form.event_date.label }}<br>
+        <strong>
+        {{ form.event_date.label }}
+        </strong><br />
         {{ form.event_date(class='solid-div') }}<br>
         {% for error in form.event_date.errors %}
+            <span style="color: red;">{{ error }}</span><br>
+        {% endfor %}
+    </div>
+    <div>
+        <strong>
+        {{ form.client_first_name.label }}
+        </strong><br />
+        {{ form.client_first_name(class='solid-div', size=32) }}<br>
+        {% for error in form.client_first_name.errors %}
+            <span style="color: red;">{{ error }}</span><br>
+        {% endfor %}
+    </div>
+    <div>
+        <strong>
+        {{ form.client_last_name.label }}
+        </strong><br>
+        {{ form.client_last_name(class='solid-div', size=32) }}<br>
+        {% for error in form.client_last_name.errors %}
+            <span style="color: red;">{{ error }}</span><br>
+        {% endfor %}
+    </div>
+    <div>
+        <strong>
+        {{ form.client_middle_name.label }}
+        </strong><br>
+        {{ form.client_middle_name(class='solid-div', size=32) }}<br>
+        {% for error in form.client_middle_name.errors %}
+            <span style="color: red;">{{ error }}</span><br>
+        {% endfor %}
+    </div>
+    <div>
+        <strong>
+        {{ form.client_email.label }}
+        </strong><br>
+        {{ form.client_email(class='solid-div', size=32) }}<br>
+        {% for error in form.client_email.errors %}
+            <span style="color: red;">{{ error }}</span><br>
+        {% endfor %}
+    </div>
+    <div>
+        <strong>
+        {{ form.client_phone_number.label }}
+        </strong><br>
+        {{ form.client_phone_number(class='solid-div', size=32) }}<br>
+        {% for error in form.client_phone_number.errors %}
             <span style="color: red;">{{ error }}</span><br>
         {% endfor %}
     </div>

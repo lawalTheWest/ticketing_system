@@ -21,9 +21,6 @@
     background-color: rgb(24, 223, 24);
     color: #2E175D;
 }
-/* main .ticket_page a { */
-    /* background-color: #0f0; */
-    /* padding: 20px 0; */
 
 .new_ticket button:hover {
     background-color: #2E175D;
@@ -36,4 +33,33 @@
     background-color: orange;
     color: #2E175D;
     transform: scale(0.8);
+}
+
+.ticket_align {
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.ticket_action {
+    display: flex;
+    flex-direction: column;
+    /* margin: 1px; */
+    padding: 1px;
+    text-decoration: none;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.ticket_action:hover {
+    background-color: #2E175D;
+    color: #fff;
+    transform: scale(1.2);
+}
+.ticket_delete_action:hover {
+    background-color: #f00;
+    color: #fff;
 }

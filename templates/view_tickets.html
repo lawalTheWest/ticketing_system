@@ -25,18 +25,19 @@
     <tbody>
         {% for ticket in tickets %}
         <tr>
-            <td>{{ ticket.id }}</td>
-            <td>{{ ticket.title }}</td>
+            <td class='ticket_align'>{{ ticket.id }}</td>
+            <td class='ticket_align'>{{ ticket.title }}</td>
             <td>{{ ticket.description }}</td>
-            <td>{{ ticket.date }}</td>
-            <td>{{ ticket.event_date }}</td>
-            <td>{{ ticket.status }}</td>
+            <td class='ticket_align' >{{ ticket.date }}</td>
+            <td class='ticket_align' >{{ ticket.event_date }}</td>
+            <td class='ticket_align' >{{ ticket.status }}</td>
             <td>
-                <a href="{{ url_for('routes.Reschedule_ticket', ticket_id=ticket.id) }}" class="btn btn-warning">Reschedule</a>
+                <a class='ticket_action' href="{{ url_for('routes.View_ticket', ticket_id=ticket.id) }}">View Ticket</a><br />
+                <a class='ticket_action' href="{{ url_for('routes.Reschedule_ticket', ticket_id=ticket.id) }}" class="btn btn-warning">Reschedule</a>
                 <br />
-                <a href="{{ url_for('routes.Cancel_ticket', ticket_id=ticket.id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this ticket?')">Cancel</a>
+                <a class='ticket_action' href="{{ url_for('routes.Cancel_ticket', ticket_id=ticket.id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this ticket?')">Cancel Ticket</a>
                 <br />
-                <a href="{{ url_for('routes.Delete_ticket', ticket_id=ticket.id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this ticket?')">Delete</a>
+                <a class='ticket_action ticket_delete_action' href="{{ url_for('routes.Delete_ticket', ticket_id=ticket.id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this ticket?')">Delete Ticket</a>
             </td>
         </tr>
         {% endfor %}

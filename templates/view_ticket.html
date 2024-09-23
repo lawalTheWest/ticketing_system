@@ -1,0 +1,45 @@
+<!-- view_ticket.html -->
+{% extends 'layout.html' %}
+
+{% block title %}Ticket {{ ticket.id }} Details{% endblock title %}
+
+{% block contents %}
+<h1>{{ user.business_name }}</h1><br />
+<hr />
+
+<h2>Official contacts / Details</h2>
+
+<!-- User Information -->
+<div>
+    <div>
+        <p><strong>Attending officer:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+        <p><strong>Attending Officer ID:</strong> {{ user.id }}</p>
+        <p><strong>Company Email Address:</strong> {{ user.email }}</p>
+        <p><strong>Company Phone Number:</strong> {{ user.phone_number }}</p>
+    </div>
+    <div>
+        <img src="{{ url_for('static', filename='./profile_pics/' + user.profile_picture) if user.profile_picture else url_for('static', filename='./profile_pics/default_profile_pic.png') }}" alt="Profile Picture" />
+    </div>
+</div>
+<br /><br />
+<hr />
+<!-- Ticket Information -->
+<div>
+    <h2>Client Details</h2><br/>
+    <hr />
+    <p><strong>First Name:</strong> {{ ticket.client_first_name }}</p>
+    <p><strong>Last Name:</strong> {{ ticket.client_last_name }}</p>
+    <p><strong>Email:</strong> {{ ticket.client_email }}</p>
+    <p><strong>Phone Number:</strong> {{ ticket.client_phone_number }}</p>
+    <p><strong>Ticket ID:</strong> {{ ticket.id }}</p>
+    <p><strong>Ticket Title:</strong> {{ ticket.title }}</p>
+    <p><strong>Ticket Description:</strong> {{ ticket.description }}</p>
+    <p><strong>Status:</strong> {{ ticket.status }}</p>
+    <p><strong>Day of Event:</strong> {{ ticket.event_date }}</p>
+    <p><strong>Date Generated:</strong> {{ ticket.date }}</p>
+</div>
+<br/>
+<hr />
+
+<a href="{{ url_for('routes.View_tickets') }}" class="btn btn-secondary">Back to Tickets</a>
+{% endblock contents %}

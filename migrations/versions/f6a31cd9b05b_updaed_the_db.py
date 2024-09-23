@@ -1,8 +1,8 @@
-"""Initial migration
+"""updaed the db
 
-Revision ID: 1f5047248db0
+Revision ID: f6a31cd9b05b
 Revises: 
-Create Date: 2024-09-20 02:47:39.110394
+Create Date: 2024-09-23 18:09:23.184656
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1f5047248db0'
+revision = 'f6a31cd9b05b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,15 +21,17 @@ def upgrade():
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=80), nullable=False),
+    sa.Column('is_admin', sa.Boolean(), nullable=True),
+    sa.Column('business_name', sa.String(length=200), nullable=True),
+    sa.Column('profile_picture', sa.String(length=120), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('password_hash', sa.String(length=255), nullable=False),
     sa.Column('first_name', sa.String(length=50), nullable=False),
     sa.Column('last_name', sa.String(length=50), nullable=False),
-    sa.Column('phone_number', sa.String(length=15), nullable=False),
+    sa.Column('phone_number', sa.String(length=15), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('phone_number'),
     sa.UniqueConstraint('username')
     )
     op.create_table('appointments',
@@ -37,6 +39,8 @@ def upgrade():
     sa.Column('date', sa.DateTime(), nullable=False),
     sa.Column('date_generated', sa.DateTime(), nullable=False),
     sa.Column('time', sa.Time(), nullable=False),
+    sa.Column('status', sa.String(length=10), nullable=False),
+    sa.Column('purpose', sa.Text(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -45,6 +49,11 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=100), nullable=False),
     sa.Column('description', sa.Text(), nullable=False),
+    sa.Column('client_first_name', sa.String(length=80), nullable=True),
+    sa.Column('client_last_name', sa.String(length=80), nullable=True),
+    sa.Column('client_middle_name', sa.String(length=80), nullable=True),
+    sa.Column('client_email', sa.String(length=80), nullable=True),
+    sa.Column('client_phone_number', sa.String(length=20), nullable=False),
     sa.Column('date', sa.DateTime(), nullable=False),
     sa.Column('event_date', sa.Date(), nullable=False),
     sa.Column('status', sa.String(length=10), nullable=False),
