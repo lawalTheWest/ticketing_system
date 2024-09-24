@@ -53,3 +53,8 @@ main {
     background-color: orange;
     color: #fff;
 }
+
+.pic_box {
+    height: 200px;
+    width: 220px;
+}

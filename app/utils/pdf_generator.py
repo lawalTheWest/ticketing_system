@@ -2,6 +2,7 @@
 
 from fpdf import FPDF
 from flask import make_response
+import os
 
 def generate_ticket_pdf(ticket, user):
     """
@@ -10,6 +11,14 @@ def generate_ticket_pdf(ticket, user):
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
+
+    # Path to the user's profile picture
+    profile_pic = user.profile_picture if user.profile_picture else 'default_profile_pic.png'
+    profile_pic_path = os.path.join('app', 'static', 'profile_pics', profile_pic)
+
+    # Check if the image file exists before adding it to the PDF
+    if os.path.exists(profile_pic_path):
+        pdf.image(profile_pic_path, x=10, y=8, w=30)
 
     # Set font for the PDF
     pdf.set_font("Arial", "B", 12)

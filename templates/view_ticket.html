@@ -20,11 +20,11 @@
         <p><strong>Company Email Address:</strong> {{ user.email }}</p>
         <p><strong>Company Phone Number:</strong> {{ user.phone_number }}</p>
     </div>
-    <div class='pic_box'>
+    <div>
     <!--
         <img src="{{ url_for('static', filename='./profile_pics/' + user.profile_picture) if user.profile_picture else url_for('static', filename='./profile_pics/default_profile_pic.png') }}" alt="Profile Picture" />
     -->
-        <img src="{{ url_for('static', filename='profile_pics/default_profile_pic.png') }}" />
+        <img src="{{ url_for('static', filename='profile_pics/default_profile_pic.png') }}" class='pic_box' />
     </div>
 </div>
 <br /><br />
