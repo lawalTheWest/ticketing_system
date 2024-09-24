@@ -3,26 +3,33 @@
 
 {% block title %}Ticket {{ ticket.id }} Details{% endblock title %}
 
+{% block header %}
+    <link rel='stylesheet' href="{{ url_for('static', filename='./css/view_ticket.css') }}" />
+{% endblock header %}
 {% block contents %}
-<h1>{{ user.business_name }}</h1><br />
+<h1 class='brand-name'>{{ user.business_name }}</h1><br />
 <hr />
 
 <h2>Official contacts / Details</h2>
 
 <!-- User Information -->
-<div>
+<div class='separate_content'>
     <div>
         <p><strong>Attending officer:</strong> {{ user.first_name }} {{ user.last_name }}</p>
         <p><strong>Attending Officer ID:</strong> {{ user.id }}</p>
         <p><strong>Company Email Address:</strong> {{ user.email }}</p>
         <p><strong>Company Phone Number:</strong> {{ user.phone_number }}</p>
     </div>
-    <div>
+    <div class='pic_box'>
+    <!--
         <img src="{{ url_for('static', filename='./profile_pics/' + user.profile_picture) if user.profile_picture else url_for('static', filename='./profile_pics/default_profile_pic.png') }}" alt="Profile Picture" />
+    -->
+        <img src="{{ url_for('static', filename='profile_pics/default_profile_pic.png') }}" />
     </div>
 </div>
 <br /><br />
 <hr />
+<br />
 <!-- Ticket Information -->
 <div>
     <h2>Client Details</h2><br/>
@@ -40,6 +47,12 @@
 </div>
 <br/>
 <hr />
-
-<a href="{{ url_for('routes.View_tickets') }}" class="btn btn-secondary">Back to Tickets</a>
+<div class='view_ticket_btns'>
+    <div>
+        <a href="{{ url_for('routes.download_ticket', ticket_id=ticket.id) }}"><button class='btn-a'>Download PDF</button></a>
+    </div>
+    <div>
+        <a href="{{ url_for('routes.View_tickets') }}"><button class='btn-b'>Back to Tickets</button></a>
+    </div>
+</div>
 {% endblock contents %}

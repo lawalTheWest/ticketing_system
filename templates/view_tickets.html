@@ -18,6 +18,7 @@
             <th>Description</th>
             <th>Date Generated</th>
             <th>Date of Event</th>
+            <th>First Name</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -30,6 +31,12 @@
             <td>{{ ticket.description }}</td>
             <td class='ticket_align' >{{ ticket.date }}</td>
             <td class='ticket_align' >{{ ticket.event_date }}</td>
+            <td>{{ ticket.client_first_name }}</td>
+            <!---
+            <p><strong>Last Name:</strong> {{ ticket.client_last_name }}</p>
+            <p><strong>Email:</strong> {{ ticket.client_email }}</p>
+            <p><strong>Phone Number:</strong> {{ ticket.client_phone_number }}</p>
+            -->
             <td class='ticket_align' >{{ ticket.status }}</td>
             <td>
                 <a class='ticket_action' href="{{ url_for('routes.View_ticket', ticket_id=ticket.id) }}">View Ticket</a><br />

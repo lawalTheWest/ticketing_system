@@ -166,10 +166,26 @@ class Appointment(db.Model, UserMixin):
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id'),
                         nullable=False)
-    
+
     def update_status(self):
-        ''' Automatically updates the status based on the event date '''
-        if self.event_date < date.today():
-            self.status = 'passed'
-        else:
-            self.status = 'Upcoming'
+        '''Logic to update ticket status based on current date and event date'''
+        current_time = datetime.now(timezone.utc)
+
+        '''Ensuring that both dates are compared as datetime objects'''
+        if self.status != 'canceled' and self.event_date:
+            if isinstance(self.event_date, datetime):
+                '''
+                    If event_date includes time,
+                    compare it directly with the current_time
+                '''
+                if self.event_date < current_time and self.status == 'Upcoming':
+                    self.status = 'Passed'
+                    db.session.commit()
+            else:
+                '''
+                    If event_date is a date object,
+                    convert current_time to date for comparison
+                '''
+                if self.event_date < current_time.date() and self.status == 'open':
+                    self.status = 'closed'
+                    db.session.commit()

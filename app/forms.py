@@ -56,11 +56,11 @@ class TicketForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     event_date = DateField('Event Date', format='%Y-%m-%d', validators=[DataRequired()])
-    client_first_name = StringField('Client First Name', validators=[DataRequired(), Length(min=2, max=80)])
-    client_last_name = StringField('Client Last Name', validators=[DataRequired(), Length(min=2, max=80)])
-    client_middle_name = StringField('Client Middle Name', validators=[DataRequired(), Length(min=2, max=80)])
-    client_email = StringField('Client Email', validators=[DataRequired(), Email(), Length(min=2, max=80)])
-    client_phone_number = StringField('Client Phone Number', validators=[DataRequired(), Length(min=2, max=20)])
+    client_first_name = StringField('Client First Name', validators=[DataRequired()])
+    client_last_name = StringField('Client Last Name', validators=[DataRequired()])
+    client_middle_name = StringField('Client Middle Name', validators=[DataRequired()])
+    client_email = StringField('Client Email', validators=[DataRequired(), Email()])
+    client_phone_number = StringField('Client Phone Number', validators=[DataRequired()])
     submit = SubmitField('Create Ticket')
 
 class RescheduleTicketForm(FlaskForm):

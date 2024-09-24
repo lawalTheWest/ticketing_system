@@ -1,0 +1,55 @@
+main {
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.brand-name {
+    justify-content: center;
+    text-align: center;
+}
+
+.separate_content {
+    display: flex;
+    /* flex-direction: row; */
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.view_ticket_btns {
+    display: flex;
+    /* flex-direction: row; */
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.view_ticket_btns a button {
+    padding: 10px;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.btn-a {
+    border-radius: 0 15px;
+}
+
+.btn-b {
+    border-radius: 15px 0;
+}
+
+.view_ticket_btns a button:hover {
+    transform: scale(1.2);
+    background-color: #2e175d;
+    color: #fff;
+}
+
+.view_ticket_btns a button:active {
+    transform: scale(0.8);
+    background-color: orange;
+    color: #fff;
+}

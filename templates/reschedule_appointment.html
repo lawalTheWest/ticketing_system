@@ -9,7 +9,7 @@
 {% block contents %}
     <div class="container">
         <h1>Reschedule Appointment</h1>
-        <form action="{{ url_for('routes.Reschedule_appointment', appointment_id=appointment.id) }}" method="POST">
+        <form action="{{ url_for('routes.reschedule_appointment', appointment_id=appointment.id) }}" method="POST">
             {{ form.hidden_tag() }}
 
             <div class="form-group">

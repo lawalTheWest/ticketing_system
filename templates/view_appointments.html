@@ -1,18 +1,18 @@
-<!-- view_appointments.html -->
 {% extends 'layout.html' %}
 
 {% block title %}View Appointments{% endblock title %}
 
 {% block header %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='view_appointments.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='./css/view_appointments.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='./css/view_tickets.css') }}" />
 {% endblock header %}
 
 {% block contents %}
-    <div class="container">
+    <div>
         <h1>View Appointments</h1>
 
         {% if appointments %}
-        <table class="table">
+        <table border='1'>
             <thead>
                 <tr>
                     <th>Ticket ID</th>
@@ -30,13 +30,10 @@
                     <td>{{ appointment.date.strftime('%Y-%m-%d') }}</td>
                     <td>{{ appointment.time.strftime('%H:%M') }}</td>
                     <td>{{ appointment.purpose }}</td>
-                    <!--
-                    <td>{{ 'Past' if appointment.date < date.today() else 'Upcoming' }}</td>
-                    -->
                     <td>{{ appointment.status }}</td>
                     <td>
-                        <a href="{{ url_for('routes.Reschedule_appointment', appointment_id=appointment.id) }}" class="btn btn-warning">Reschedule</a>
-                        <a href="{{ url_for('routes.Cancel_appointment', appointment_id=appointment.id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this appointment?')">Cancel</a>
+                        <a class='ticket_action' href="{{ url_for('routes.reschedule_appointment', appointment_id=appointment.id) }}">Reschedule</a>
+                        <a class='ticket_action' href="{{ url_for('routes.cancel_appointment', appointment_id=appointment.id) }}" onclick="return confirm('Are you sure you want to cancel this appointment?')">Cancel</a>
                     </td>
                 </tr>
                 {% endfor %}
