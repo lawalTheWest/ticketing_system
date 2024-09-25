@@ -69,7 +69,7 @@ def Register():
 
     '''validate credentials'''
     if form.validate_on_submit():
-        # hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         filename = None
 
         if form.profile_picture.data:
