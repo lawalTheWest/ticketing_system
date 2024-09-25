@@ -10,7 +10,6 @@ from datetime import date, datetime, timezone
 from werkzeug.utils import secure_filename
 import os
 from fpdf import FPDF
-# from flask import make_response
 from .utils.pdf_generator import generate_ticket_pdf
 
 
@@ -70,12 +69,12 @@ def Register():
 
     '''validate credentials'''
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        # hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         filename = None
 
         if form.profile_picture.data:
             profile_picture_file = form.profile_picture.data
-            # Validate file type for security purposes
+            # Validating file type for security purposes
             ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
             if not ('.' in profile_picture_file.filename and profile_picture_file.filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS):
                 flash('Invalid file type for profile picture. Only images are allowed.', 'danger')
@@ -282,7 +281,7 @@ def download_ticket(ticket_id):
     ticket = Ticket.query.get_or_404(ticket_id)
     user = User.query.get_or_404(ticket.user_id)
 
-    # Ensure the current user is authorized to download the ticket
+    # Ensures the current user is authorized to download the ticket
     if user.id != current_user.id:
         '''abort - Forbidden'''
         abort(403)
