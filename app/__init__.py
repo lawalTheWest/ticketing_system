@@ -27,8 +27,14 @@ def create_app():
     
     '''database configuration'''
     app.config.from_object(Config)
-    # app.config['UPLOAD_FOLDER'] = os.path.join(current_app.root_path, 'static/profile_pics')
-    # app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Set a max upload size of 16MB
+    # Define the folder where you want to save the uploaded images
+    UPLOAD_FOLDER = 'static/uploads'
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+    # Configure the app to recognize the upload folder
+    app.config['UPLOAD_FOLDER'] = '../static/profile_pic'
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Max file size 16MB
+    app.secret_key = config.SECRET_KEY
 
 
     ''' initializing the app with extesions'''
