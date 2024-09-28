@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+<!-- templates/edit_profile.html -->
+
+{% block header %}{% endblock header %}
+
+{% block title %}{% endblock title %}
+
+{% block contents %}
+    <!-- templates/edit_profile.html -->
+<h1>Edit Profile</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        
+        <div>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+                <span style="color: red;">[{{ error }}]</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.business_name.label }}<br>
+            {{ form.business_name(size=32) }}<br>
+            {% for error in form.business_name.errors %}
+                <span style="color: red;">[{{ error }}]</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.email.label }}<br>
+            {{ form.email(size=32) }}<br>
+            {% for error in form.email.errors %}
+                <span style="color: red;">[{{ error }}]</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.first_name.label }}<br>
+            {{ form.first_name(size=32) }}<br>
+            {% for error in form.first_name.errors %}
+                <span style="color: red;">[{{ error }}]</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.last_name.label }}<br>
+            {{ form.last_name(size=32) }}<br>
+            {% for error in form.last_name.errors %}
+                <span style="color: red;">[{{ error }}]</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.phone_number.label }}<br>
+            {{ form.phone_number(size=32) }}<br>
+            {% for error in form.phone_number.errors %}
+                <span style="color: red;">[{{ error }}]</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.profile_picture.label }}<br>
+            {{ form.profile_picture() }}<br>
+            {% for error in form.profile_picture.errors %}
+                <span style="color: red;">[{{ error }}]</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock contents %}
