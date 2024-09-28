@@ -3,7 +3,7 @@
 
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, abort
 from flask_login import login_user, logout_user, login_required, current_user
-from .forms import LoginForm, RegisterForm, TicketForm, EmailForm, AppointmentForm, RescheduleTicketForm
+from .forms import LoginForm, RegisterForm, TicketForm, EmailForm, AppointmentForm, RescheduleTicketForm, EditProfileForm
 from . import db, bcrypt
 from .base_model import User, Ticket, Appointment
 from datetime import date, datetime, timezone
@@ -15,17 +15,27 @@ from .utils.pdf_generator import generate_ticket_pdf
 
 routes = Blueprint('routes', __name__)
 
-'''Home route'''
+
+
+'''
+    Home route
+'''
 @routes.route('/')
 def Home():
     '''Defines the home function'''
     return render_template("home.html")
 
-'''about routes'''
+
+
+'''
+    about routes
+'''
 @routes.route('/about')
 def About():
     '''defines the about function'''
     return render_template('about.html')
+
+
 
 
 '''
@@ -33,7 +43,10 @@ def About():
 '''
 
 
-'''Login route'''
+
+'''
+    Login route
+'''
 @routes.route('/login', methods=['GET', 'POST'])
 def Login():
     '''defines the login function and it logics'''
@@ -61,7 +74,12 @@ def Login():
     '''Renders the login page if there is any error with validation'''
     return render_template('login.html', form=form)
 
-'''register route'''
+
+
+
+'''
+    register route
+'''
 @routes.route('/register', methods=['GET', 'POST'])
 def Register():
     '''define registration function and its logics'''
@@ -114,7 +132,12 @@ def Register():
     
     return render_template('register.html', form=form)
 
-'''logout route'''
+
+
+
+'''
+    logout route
+'''
 @routes.route('/logout', methods=['GET', 'POST'])
 @login_required
 def Logout():
@@ -123,11 +146,59 @@ def Logout():
     flash('Logged out Successfully!', 'info')
     return redirect(url_for('routes.Home'))
 
-'''dashboard route'''
+
+
+
+'''
+    dashboard route
+'''
 @routes.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def Dashboard():
     return render_template('dashboard.html')
+
+
+
+'''
+    edit profile
+'''
+@routes.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    '''Allow user to edit their profile'''
+    form = EditProfileForm()
+
+    # Pre-fill the form with current user details
+    if request.method == 'GET':
+        form.username.data = current_user.username
+        form.business_name.data = current_user.business_name
+        form.email.data = current_user.email
+        form.first_name.data = current_user.first_name
+        form.last_name.data = current_user.last_name
+        form.phone_number.data = current_user.phone_number
+
+    if form.validate_on_submit():
+        if form.profile_picture.data:
+            profile_picture_file = form.profile_picture.data
+            # Validating and saving profile picture
+            filename = secure_filename(profile_picture_file.filename)
+            file_path = os.path.join(current_app.root_path, 'static/profile_pics', filename)
+            profile_picture_file.save(file_path)
+            current_user.profile_picture = filename
+
+        current_user.username = form.username.data
+        current_user.business_name = form.business_name.data
+        current_user.email = form.email.data
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+        current_user.phone_number = form.phone_number.data
+
+        db.session.commit()
+        flash('Your profile has been updated successfully!', 'success')
+        return redirect(url_for('routes.Dashboard'))
+
+    return render_template('edit_profile.html', form=form)
+
 
 '''
     Creating the tickets
