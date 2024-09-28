@@ -7,7 +7,12 @@ from flask_wtf import FlaskForm
 from datetime import datetime
 from .base_model import User
 from flask_wtf.file import FileAllowed
+from  flask_login import current_user
 
+
+'''
+    Registration
+'''
 class RegisterForm(FlaskForm):
     '''the registration form class'''
     username = StringField('Username', validators=[DataRequired(), Length(min=4,max=80)])
@@ -40,17 +45,65 @@ class RegisterForm(FlaskForm):
             flash('Invalid credentials!')
             raise ValidationError('Phone number already registered!')
 
+
+
+'''
+    Login Form
+'''
 class LoginForm(FlaskForm):
     '''Login form received from the user Interface'''
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
+
+
+'''
+    Email Form
+'''
 class EmailForm(FlaskForm):
     '''the email form class foor account recovery'''
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
 
+
+'''
+    form to Edit profile
+'''
+class EditProfileForm(FlaskForm):
+    '''Form to edit profile details'''
+    username = StringField('Username', validators=[DataRequired(), Length(min=4, max=80)])
+    business_name = StringField('Business Name', validators=[DataRequired(), Length(min=1, max=200)])
+    profile_picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    first_name = StringField('First Name', validators=[DataRequired(), Length(min=4, max=80)])
+    last_name = StringField('Last Name', validators=[DataRequired(), Length(min=4, max=80)])
+    phone_number = StringField('Phone Number', validators=[DataRequired(), Length(min=8, max=20)])
+    submit = SubmitField('Update Profile')
+
+    def validate_username(self, username):
+        '''validates username uniqueness (excluding the current user)'''
+        user = User.query.filter_by(username=username.data).first()
+        if user and user.id != current_user.id:
+            raise ValidationError('Username already exists!')
+
+    def validate_email(self, email):
+        '''validate email uniqueness (excluding the current user)'''
+        user = User.query.filter_by(email=email.data).first()
+        if user and user.id != current_user.id:
+            raise ValidationError('Email already registered!')
+
+    def validate_phone_number(self, phone_number):
+        '''Validates phone number uniqueness (excluding the current user)'''
+        user = User.query.filter_by(phone_number=phone_number.data).first()
+        if user and user.id != current_user.id:
+            raise ValidationError('Phone number already registered!')
+
+
+
+'''
+    ticket form
+'''
 class TicketForm(FlaskForm):
     '''ticket creation form class'''
     title = StringField('Title', validators=[DataRequired()])
@@ -63,10 +116,18 @@ class TicketForm(FlaskForm):
     client_phone_number = StringField('Client Phone Number', validators=[DataRequired()])
     submit = SubmitField('Create Ticket')
 
+
+'''
+    Form to reschedule ticket
+'''
 class RescheduleTicketForm(FlaskForm):
     new_date = DateField('New Schedule Date', format='%Y-%m-%d', validators=[DataRequired()])
     submit = SubmitField('Reschedule Ticket')
 
+
+'''
+    Form to book appointment
+'''
 class AppointmentForm(FlaskForm):
     '''Form for creating appointments'''
     date = DateField('Appointment Date', format='%Y-%m-%d', validators=[DataRequired()])
